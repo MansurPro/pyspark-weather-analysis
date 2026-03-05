@@ -1,0 +1,13 @@
+name: cloudspark
+channels:
+  - defaults
+dependencies:
+  - python=3.11
+  - pip
+  - pip:
+      - pyspark>=4.0,<4.2
+      - jupyter
+      - notebook
+      - ipykernel
+      - pandas
+      - matplotlib

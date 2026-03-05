@@ -1,0 +1,197 @@
+2. Load the CSV files and display the count of each dataset.
+
+The weather datasets for Cincinnati (station 72429793812) and Florida
+(station 99495199999) from 2015 to 2024 were loaded using PySpark.
+
+The Florida dataset for 2016 does not exist, therefore a total of
+19 datasets were processed.
+
+The row count for each dataset is shown below:
+
+YEAR  CITY        STATION        ROW_COUNT
+2015  Cincinnati  72429793812    365
+2015  Florida     99495199999    355
+2016  Cincinnati  72429793812    366
+2017  Cincinnati  72429793812    365
+2017  Florida     99495199999    283
+2018  Cincinnati  72429793812    365
+2018  Florida     99495199999    363
+2019  Cincinnati  72429793812    365
+2019  Florida     99495199999    345
+2020  Cincinnati  72429793812    366
+2020  Florida     99495199999    365
+2021  Cincinnati  72429793812    365
+2021  Florida     99495199999    104
+2022  Cincinnati  72429793812    365
+2022  Florida     99495199999    259
+2023  Cincinnati  72429793812    365
+2023  Florida     99495199999    276
+2024  Cincinnati  72429793812    366
+2024  Florida     99495199999    133
+
+============================================================================================================
+
+3. Find the hottest day (MAX) for each year.
+
+Using PySpark, the hottest day for each year between 2015 and 2024
+was calculated by selecting the maximum value in the MAX column
+for each year after removing invalid values (9999.9).
+
+The results are shown below:
+
+YEAR  STATION       NAME                                             DATE        MAX
+2015  72429793812   CINCINNATI MUNICIPAL AIRPORT LUNKEN FIELD, OH US 2015-06-12  91.9
+2016  72429793812   CINCINNATI MUNICIPAL AIRPORT LUNKEN FIELD, OH US 2016-07-24  93.9
+2017  72429793812   CINCINNATI MUNICIPAL AIRPORT LUNKEN FIELD, OH US 2017-07-22  91.9
+2018  72429793812   CINCINNATI MUNICIPAL AIRPORT LUNKEN FIELD, OH US 2018-07-04  96.1
+2019  72429793812   CINCINNATI MUNICIPAL AIRPORT LUNKEN FIELD, OH US 2019-09-30  95.0
+2020  72429793812   CINCINNATI MUNICIPAL AIRPORT LUNKEN FIELD, OH US 2020-07-05  93.9
+2021  72429793812   CINCINNATI MUNICIPAL AIRPORT LUNKEN FIELD, OH US 2021-08-12  95.0
+2022  72429793812   CINCINNATI MUNICIPAL AIRPORT LUNKEN FIELD, OH US 2022-06-14  96.1
+2023  72429793812   CINCINNATI MUNICIPAL AIRPORT LUNKEN FIELD, OH US 2023-08-23  96.1
+2024  72429793812   CINCINNATI MUNICIPAL AIRPORT LUNKEN FIELD, OH US 2024-08-30  100.9
+
+============================================================================================================
+
+4. Find the coldest day (MIN) for the month of March across all years (2015–2024).
+
+Using PySpark, I filtered the weather data to include only records from March and removed invalid MIN values (9999.9). Then I selected the row with the smallest MIN value across all years.
+
+Result:
+STATION: 72429793812
+NAME: CINCINNATI MUNICIPAL AIRPORT LUNKEN FIELD, OH US
+DATE: 2015-03-06
+MIN: 3.2
+
+============================================================================================================
+
+5. Find the year with the most precipitation for Cincinnati and Florida.
+
+Using PySpark, the precipitation column (PRCP) was analyzed for each station
+and year. Invalid values (PRCP = 99.99) were removed before computing the
+average precipitation per year.
+
+The year with the highest mean precipitation was then selected for each station.
+
+Results:
+
+STATION: 72429793812
+NAME: CINCINNATI MUNICIPAL AIRPORT LUNKEN FIELD, OH US
+YEAR: 2018
+MEAN_PRCP: 0.158
+
+STATION: 99495199999
+NAME: SEBASTIAN INLET STATE PARK, FL US
+YEAR: 2015
+MEAN_PRCP: 0.0
+
+============================================================================================================
+
+6. Count the percentage of missing values for wind gust (GUST) for Cincinnati and Florida in the year 2024.
+
+Using PySpark, I filtered the dataset for the year 2024 and counted the number of records where the wind gust value (GUST) was equal to 999.9, which indicates a missing value in the GSOD dataset.
+
+The percentage of missing values was computed as:
+
+(Missing GUST values / Total records) × 100
+
+Results:
+
+STATION: 72429793812
+NAME: CINCINNATI MUNICIPAL AIRPORT LUNKEN FIELD, OH US
+MISSING_GUST_PERCENT: 39.07%
+
+STATION: 99495199999
+NAME: SEBASTIAN INLET STATE PARK, FL US
+MISSING_GUST_PERCENT: 100.0%
+
+============================================================================================================
+
+7. Find the mean, median, mode, and standard deviation of temperature (TEMP)
+for Cincinnati in each month for the year 2020.
+
+Using PySpark, I filtered the dataset for the Cincinnati station
+(STATION = 72429793812) and year 2020. Invalid temperature values
+(TEMP = 9999.9) were removed from the analysis.
+
+For each month, the following statistics were computed:
+
+Mean temperature
+Median temperature
+Mode temperature
+Standard deviation
+
+Results:
+
+MONTH  MEAN_TEMP  MEDIAN_TEMP  STD_TEMP  MODE_TEMP
+1      37.95      37.7         8.35      24.7
+2      36.59      36.0         7.90      25.9
+3      49.07      47.8         8.78      43.0
+4      51.78      51.0         7.31      55.7
+5      60.89      63.7         9.31      73.9
+6      72.55      73.7         4.90      74.7
+7      77.60      77.9         2.34      77.5
+8      73.35      73.7         3.49      73.2
+9      66.10      65.8         7.12      75.3
+10     55.19      54.0         6.73      63.8
+11     48.00      47.7         6.83      47.7
+12     35.99      35.2         6.64      32.1
+
+============================================================================================================
+
+8. Find the top 10 days with the lowest Wind Chill for Cincinnati in 2017.
+
+Using PySpark, I filtered the dataset for the Cincinnati station
+(STATION = 72429793812) and year 2017. Only days where TEMP < 50°F
+and wind speed (WDSP) > 3 mph were included.
+
+Wind Chill was calculated using the formula:
+
+WC = 35.74 + 0.6215 × TEMP − 35.75 × (WDSP^0.16) + 0.4275 × TEMP × (WDSP^0.16)
+
+The 10 days with the lowest wind chill values were selected.
+
+DATE        TEMP   WDSP   WIND_CHILL
+2017-01-07  10.5   7.0    -0.41
+2017-12-31  11.0   5.3     2.03
+2017-12-27  13.0   5.8     3.82
+2017-12-28  13.6   5.8     4.53
+2017-01-06  13.6   5.5     4.87
+2017-01-08  15.9   5.2     7.93
+2017-12-25  25.8  13.5    14.29
+2017-12-30  21.6   5.3    14.54
+2017-01-05  22.2   5.8    14.75
+2017-12-26  23.3   6.2    15.69
+
+============================================================================================================
+
+9. Investigate how many days had extreme weather conditions for Florida using the FRSHTT column.
+
+Using PySpark, I analyzed the Florida station data (STATION = 99495199999) and decoded the 6-digit FRSHTT weather indicator field, where each digit represents whether a weather event occurred on that day.
+
+The counts of extreme weather days are shown below:
+
+FOG_DAYS: 0
+RAIN_DAYS: 0
+SNOW_DAYS: 0
+HAIL_DAYS: 0
+THUNDER_DAYS: 0
+TORNADO_DAYS: 0
+
+============================================================================================================
+
+10. Predict the maximum temperature for Cincinnati for November and December 2024 based on the previous 2 years of weather data.
+
+Using PySpark, I first extracted the monthly maximum temperatures for Cincinnati (station 72429793812). I then used a simple linear trend model based on the previous two years (2022 and 2023) for each target month.
+
+Prediction formula:
+Predicted 2024 value = 2023 value + (2023 value - 2022 value)
+
+Results:
+
+YEAR  MONTH  MAX_2022  MAX_2023  PREDICTED_MAX_2024
+2024  11     75.9      80.1      84.3
+2024  12     66.0      64.0      62.0
+
+Model discussion:
+This forecasting approach is simple and easy to interpret, but it uses only two previous yearly values, so its accuracy is limited. It does not account for longer historical trends, seasonal variability, or unusual weather patterns. A better model could use more historical years and more advanced time-series methods such as linear regression, ARIMA, or Prophet.
